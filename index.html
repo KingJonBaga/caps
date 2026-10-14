@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NURTURA — Maternal Health Management</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const breakpoints = {
+        'bp-short-desktop': width => width >= 1100 && innerHeight <= 820,
+        'bp-desktop': width => width > 1024,
+        'bp-max-1024': width => width <= 1024,
+        'bp-769-1024': width => width >= 769 && width <= 1024,
+        'bp-max-840': width => width <= 840,
+        'bp-max-768': width => width <= 768,
+        'bp-321-768': width => width >= 321 && width <= 768,
+        'bp-short-phone': (width, height) => width <= 380 && height <= 600,
+        'bp-max-320': width => width <= 320,
+        'bp-portrait': (width, height) => width >= 769 && width <= height
+      };
+      const update = () => {
+        const { innerWidth: width, innerHeight: height } = window;
+        Object.entries(breakpoints).forEach(([name, matches]) => {
+          root.classList.toggle(name, matches(width, height));
+        });
+      };
+      update();
+      window.addEventListener('resize', update);
+      window.addEventListener('orientationchange', update);
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+
+<div id="page-login" class="page active">
+
+  
+  <header class="ln-nav">
+    <a href="#" class="ln-brand">
+      <div class="ln-brand-icon">
+        <i class="fa-solid fa-heart"></i>
+      </div>
+      <div class="ln-brand-text">
+        <span class="ln-brand-name">NURTURA</span>
+        <span class="ln-brand-tag">Maternal health management</span>
+      </div>
+    </a>
+    <nav class="ln-nav-links">
+      <a href="#home" onclick="showLandingPage('home');return false;">Home</a>
+      <a href="#about" onclick="showLandingPage('about');return false;">About</a>
+      <a href="#features" onclick="showLandingPage('features');return false;">Features</a>
+      <a href="#community" onclick="showLandingPage('community');return false;">Our community</a>
+      <a href="#contact" onclick="showLandingPage('contact');return false;">Contact us</a>
+      <a href="#help" class="ln-btn-hand" onclick="showLandingPage('help');return false;">
+        <span class="ln-btn-hand-circle"></span>
+        Need a hand?
+      </a>
+    </nav>
+  </header>
+
+  
+  <main class="ln-main landing-view active" id="home">
+
+    <div class="ln-left">
+
+      
+      <div class="ln-blue-card">
+        <div class="ln-blue-card-text">
+          <h1>Good care.<br>Great company.</h1>
+          <p>For mums, care teams, and the people who bring us together.</p>
+        </div>
+        <div class="ln-blob">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+      </div>
+
+      <div class="ln-photo-card">
+        <img
+          src="https://images.pexels.com/photos/7108418/pexels-photo-7108418.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1600"
+          alt="A pregnant patient receiving an ultrasound examination"
+        />
+        <div class="ln-photo-pill">
+          <i class="fa-solid fa-heart"></i>
+          A whole community, in your corner.
+        </div>
+      </div>
+
+      
+      <div class="ln-teal-card">
+        <div class="ln-teal-icon">
+          <i class="fa-regular fa-heart"></i>
+        </div>
+        <div class="ln-teal-text">
+          <h3>Different roles. One circle of care.</h3>
+          <p>Appointments, health records, and follow-ups — connected from home to clinic.</p>
+        </div>
+      </div>
+
+    </div>
+
+    
+    <div class="ln-right">
+
+      <div class="ln-patient-badge" id="loginRoleBadge">
+        <i class="fa-regular fa-heart"></i>
+        PATIENT SPACE
+      </div>
+
+      <h2 class="ln-welcome">Hey, welcome<br>back!</h2>
+      <p class="ln-welcome-sub">Your next chapter of care starts here. Sign in to catch up.</p>
+
+      <form class="ln-form" id="loginForm" novalidate onsubmit="handleLogin(event)">
+
+        <input type="hidden" id="loginRole" name="role" value="patient">
+
+        <div class="ln-field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email"
+                 placeholder="you@example.com" autocomplete="email">
+          <span class="ln-error" id="emailError"></span>
+        </div>
+
+        <div class="ln-field">
+          <label for="password">Password</label>
+          <div class="ln-pw-wrap">
+            <input type="password" id="password" name="password"
+                   placeholder="Enter your password" autocomplete="current-password">
+            <button type="button" class="ln-pw-toggle" onclick="togglePw()" aria-label="Toggle password">
+              <i class="fa-regular fa-eye" id="pwIcon"></i>
+            </button>
+          </div>
+          <span class="ln-error" id="pwError"></span>
+        </div>
+
+        <div class="ln-form-row">
+          <label class="ln-checkbox">
+            <input type="checkbox" id="rememberMe">
+            <span class="ln-check-box"></span>
+            Remember me
+          </label>
+          <a href="#" class="ln-forgot">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="ln-submit" id="submitBtn">
+          Let's get you signed in
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+      </form>
+
+        <div class="demo-account-picker" aria-label="Preset demo accounts">
+          <p class="demo-account-title">Try a demo account</p>
+          <div class="demo-account-buttons">
+            <button type="button" onclick="useDemoAccount('patient')">Patient</button>
+            <button type="button" onclick="useDemoAccount('provider')">Doctor</button>
+            <button type="button" onclick="useDemoAccount('admin')">Administrator</button>
+          </div>
+          <p class="demo-account-note">Select a role to fill sample sign-in details. Demo only, not real authentication.</p>
+        </div>
+
+        <p class="ln-register">
+          Joining our circle? <a href="#">Register here</a>
+        </p>
+      <div class="ln-privacy">
+        <i class="fa-solid fa-lock"></i>
+        Your records are private. Your care is connected.
+      </div>
+
+      <div class="ln-help">
+        <p class="ln-help-title">A little help goes a long way.</p>
+        <p class="ln-help-sub">Ask your care team if you need help getting started with appointments or records.</p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <section class="landing-section landing-view" id="about">
+    <div class="landing-section-inner">
+      <p class="landing-eyebrow">ABOUT NURTURA</p>
+      <h2>Maternal care, connected through every step.</h2>
+      <p class="landing-section-intro">NURTURA is a maternal health management prototype designed to help patients and care teams keep important parts of care organized in one place.</p>
+      <div class="landing-feature-grid">
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-regular fa-calendar-check"></i></span>
+          <h3>Appointments</h3>
+          <p>Keep upcoming visits and care follow-ups visible to the patient and care team.</p>
+        </article>
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-regular fa-file-lines"></i></span>
+          <h3>Health records</h3>
+          <p>Review maternal health information and records in the patient workspace.</p>
+        </article>
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-solid fa-people-arrows-left-right"></i></span>
+          <h3>Connected care</h3>
+          <p>Patient, care-provider, and administrator views support different parts of the workflow.</p>
+        </article>
+      </div>
+      <div class="landing-story-panel">
+        <div class="landing-story-image">
+          <img src="https://images.pexels.com/photos/7108418/pexels-photo-7108418.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="A patient receiving prenatal care from a clinician">
+        </div>
+        <div class="landing-story-copy">
+          <span class="landing-story-mark"><i class="fa-solid fa-heart-pulse"></i></span>
+          <p class="landing-eyebrow">CARE, THROUGH EVERY STEP</p>
+          <h3>Thoughtful support for the journey to motherhood.</h3>
+          <p>Keep care conversations, appointments, and follow-up needs connected between the patient and care team.</p>
+          <a class="landing-text-link" href="#features" onclick="showLandingPage('features');return false;">Explore maternal care features <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section landing-section-tint landing-view" id="features">
+    <div class="landing-section-inner">
+      <p class="landing-eyebrow">MATERNAL CARE FEATURES</p>
+      <h2>Support for the care journey, all in one place.</h2>
+      <p class="landing-section-intro">Explore the tools included in this maternal health management prototype.</p>
+      <div class="landing-feature-grid">
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-regular fa-calendar-check"></i></span>
+          <h3>Appointment coordination</h3>
+          <p>Review scheduled visits, confirmation status, and follow-up appointments.</p>
+        </article>
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+          <h3>Pregnancy health records</h3>
+          <p>See sample prenatal details and health information in the patient workspace.</p>
+        </article>
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-solid fa-baby"></i></span>
+          <h3>Postpartum follow-ups</h3>
+          <p>Use the sample checklist to keep postpartum care and wellbeing in view.</p>
+        </article>
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-solid fa-user-doctor"></i></span>
+          <h3>Care-team workspace</h3>
+          <p>Providers can review patient information, appointments, and follow-up items.</p>
+        </article>
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-solid fa-user-shield"></i></span>
+          <h3>Administration tools</h3>
+          <p>Administrators can review sample accounts and download a demonstration report.</p>
+        </article>
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-regular fa-bell"></i></span>
+          <h3>Care reminders</h3>
+          <p>Explore the prototype notification and follow-up areas; messages are not sent.</p>
+        </article>
+      </div>
+      <p class="landing-prototype-note">This is a front-end prototype using sample data. It is not connected to a live clinic or medical record system.</p>
+    </div>
+  </section>
+
+  <section class="landing-section landing-section-tint landing-view" id="community">
+    <div class="landing-section-inner">
+      <p class="landing-eyebrow">OUR COMMUNITY</p>
+      <h2>Different roles. One circle of care.</h2>
+      <p class="landing-section-intro">Maternal care works best when people can stay informed and connected. Each role has a dedicated area in the prototype.</p>
+      <div class="landing-feature-grid">
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-regular fa-heart"></i></span>
+          <h3>For patients</h3>
+          <p>View a personal dashboard, appointments, pregnancy records, and postpartum follow-up information.</p>
+          <button type="button" class="landing-role-link" data-login-role="patient" onclick="selectLandingRole('patient')">Open patient space <i class="fa-solid fa-arrow-right"></i></button>
+        </article>
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-solid fa-user-doctor"></i></span>
+          <h3>For care providers</h3>
+          <p>Review patient information, appointments, and follow-up items in the care-team workspace.</p>
+          <button type="button" class="landing-role-link" data-login-role="provider" onclick="selectLandingRole('provider')">Open care-team space <i class="fa-solid fa-arrow-right"></i></button>
+        </article>
+        <article class="landing-info-card">
+          <span class="landing-info-icon"><i class="fa-solid fa-user-shield"></i></span>
+          <h3>For administrators</h3>
+          <p>Use the administration workspace to review sample accounts and prototype reports.</p>
+          <button type="button" class="landing-role-link" data-login-role="admin" onclick="selectLandingRole('admin')">Open administrator space <i class="fa-solid fa-arrow-right"></i></button>
+        </article>
+      </div>
+      <p class="landing-prototype-note">This is an academic prototype with sample data. It is not a medical record system and does not provide medical advice.</p>
+      <div class="care-journey-panel">
+        <div class="care-journey-heading">
+          <span class="landing-eyebrow">CONNECTED CARE JOURNEY</span>
+          <h3>One team around every step.</h3>
+        </div>
+        <div class="care-journey-steps">
+          <div class="care-journey-step">
+            <span><i class="fa-regular fa-calendar-check"></i></span>
+            <strong>Plan</strong>
+            <small>Appointments and check-ins</small>
+          </div>
+          <i class="fa-solid fa-arrow-right care-journey-arrow" aria-hidden="true"></i>
+          <div class="care-journey-step">
+            <span><i class="fa-solid fa-heart-pulse"></i></span>
+            <strong>Connect</strong>
+            <small>Patient and care team</small>
+          </div>
+          <i class="fa-solid fa-arrow-right care-journey-arrow" aria-hidden="true"></i>
+          <div class="care-journey-step">
+            <span><i class="fa-solid fa-baby"></i></span>
+            <strong>Follow up</strong>
+            <small>Maternal wellbeing</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section contact-section landing-view" id="contact">
+    <div class="landing-section-inner contact-layout">
+      <div class="contact-copy">
+        <p class="landing-eyebrow">CONTACT</p>
+        <h2>We are here to help!</h2>
+        <p>Let us know how we can best support you. Use the form to share a general question about using NURTURA or the maternal health management prototype.</p>
+        <p class="contact-care-note"><i class="fa-solid fa-heart"></i> For pregnancy concerns, appointment changes, or urgent medical needs, contact your healthcare provider or clinic directly.</p>
+      </div>
+      <div class="contact-form-wrap">
+        <form class="contact-form" id="contactForm" onsubmit="handleContactMessage(event)">
+          <label class="contact-sr-only" for="contactName">Name</label>
+          <input id="contactName" name="name" type="text" placeholder="Name" autocomplete="name" required>
+
+          <label class="contact-sr-only" for="contactEmail">Email</label>
+          <input id="contactEmail" name="email" type="email" placeholder="Email" autocomplete="email" required>
+
+          <label class="contact-sr-only" for="contactPhone">Phone number (optional)</label>
+          <input id="contactPhone" name="phone" type="tel" placeholder="Phone number (optional)" autocomplete="tel">
+
+          <label class="contact-sr-only" for="contactComment">Comment</label>
+          <textarea id="contactComment" name="comment" placeholder="How can we help?" rows="4" required></textarea>
+
+          <button type="submit" class="contact-submit">SEND MESSAGE</button>
+          <p class="contact-form-note">This prototype does not send or store messages. Please do not include private medical information.</p>
+          <p class="contact-form-status" id="contactFormStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="contact-support-band">
+        <div class="contact-support-item">
+          <span><i class="fa-solid fa-user-doctor"></i></span>
+          <div><strong>Your care team comes first</strong><p>Contact your clinic directly for medical or appointment needs.</p></div>
+        </div>
+        <div class="contact-support-item">
+          <span><i class="fa-solid fa-lock"></i></span>
+          <div><strong>Protect your privacy</strong><p>This demo form does not send or save your information.</p></div>
+        </div>
+        <div class="contact-support-item">
+          <span><i class="fa-solid fa-heart"></i></span>
+          <div><strong>Here for your journey</strong><p>NURTURA brings maternal-care tools into one connected prototype.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section landing-section-tint landing-view" id="help">
+    <div class="landing-section-inner landing-help-page">
+      <div class="landing-help-list">
+        <article class="landing-help-item">
+          <h3><i class="fa-solid fa-user-doctor"></i> Medical or pregnancy concerns</h3>
+          <p>Contact your healthcare provider or clinic. This prototype is not for diagnosis, treatment, or emergencies.</p>
+        </article>
+        <article class="landing-help-item">
+          <h3><i class="fa-solid fa-laptop-medical"></i> Using the prototype</h3>
+          <p>Sign in to explore the patient, care-provider, and administrator sample workspaces. Changes are not saved.</p>
+        </article>
+        <a class="landing-text-link" href="#home" onclick="showLandingPage('home');return false;">Return to sign in <i class="fa-solid fa-arrow-up"></i></a>
+      </div>
+    </div>
+  </section>
+
+  
+  <footer class="ln-footer">
+    <span>© 2026 MHMS · Made for every step of motherhood.</span>
+    <nav class="ln-footer-links">
+      <a href="#">Privacy policy</a>
+      <a href="#">Terms of use</a>
+      <a href="#">English ↓</a>
+    </nav>
+  </footer>
+
+</div>
+
+
+
+<div id="page-dashboard" class="page app-page">
+
+  <div class="page-breadcrumb">User Dashboard</div>
+
+  <header class="app-bar">
+    <a href="#" class="app-brand" onclick="showPage('login');return false;">
+      <div class="app-brand-icon"><i class="fa-solid fa-heart"></i></div>
+      <div class="app-brand-text">
+        <span class="app-brand-name">MHMS</span>
+        <span class="app-brand-sub">MATERNAL CARE</span>
+      </div>
+    </a>
+    <nav class="app-nav">
+      <a href="#" class="app-nav-item active" onclick="showPage('dashboard');return false;">
+        <i class="fa-solid fa-house"></i> Dashboard
+      </a>
+      <a href="#" class="app-nav-item" onclick="showPage('profile');return false;">
+        <i class="fa-regular fa-user"></i> My Profile
+      </a>
+      <a href="#" class="app-nav-item" onclick="showProfileTab('prenatal-info');return false;"><i class="fa-regular fa-file-lines"></i> Pregnancy Records</a>
+      <a href="#" class="app-nav-item" onclick="showPatientAppointments();return false;"><i class="fa-regular fa-calendar"></i> Appointments</a>
+      <a href="#" class="app-nav-item" onclick="showToast('Prototype reminder: real notifications are not sent.', 'patientToast');return false;"><i class="fa-regular fa-bell"></i> Notifications</a>
+    </nav>
+    <div class="app-bar-right">
+      <button class="notif-btn" aria-label="Notifications" onclick="showToast('Prototype reminder: real notifications are not sent.', 'patientToast')">
+        <i class="fa-regular fa-bell"></i>
+        <span class="notif-dot">1</span>
+      </button>
+      <div class="user-chip">
+        <div class="user-avatar">MS</div>
+        <div class="user-info">
+          <span class="user-name">Maria Santos</span>
+          <span class="user-meta">28 weeks</span>
+        </div>
+        <button class="logout-btn" onclick="showPage('login')" aria-label="Sign out">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <div class="dash-header">
+      <p class="dash-date">SUNDAY, JUNE 15</p>
+      <h1>Welcome back, Maria!</h1>
+      <p class="dash-sub">Here's a gentle overview of your pregnancy journey and the care planned for you.</p>
+    </div>
+    <div class="dash-top-row">
+      <div class="preg-card">
+        <span class="trimester-badge">Third trimester</span>
+        <p class="preg-label">Your pregnancy journey</p>
+        <div class="preg-weeks">28 <span>weeks</span></div>
+        <div class="preg-progress-wrap">
+          <div class="preg-progress-bar">
+            <div class="preg-progress-fill" style="width:70%"></div>
+          </div>
+          <div class="preg-progress-labels">
+            <span>Week 1</span><span>70% complete</span><span>Week 40</span>
+          </div>
+        </div>
+        <div class="preg-details">
+          <div>
+            <p class="preg-detail-label">Estimated delivery</p>
+            <p class="preg-detail-val">September 8, 2025</p>
+          </div>
+          <div>
+            <p class="preg-detail-label">Baby is about</p>
+            <p class="preg-detail-val">37 cm long</p>
+          </div>
+        </div>
+        <div class="preg-deco-heart"><i class="fa-regular fa-heart"></i></div>
+      </div>
+      <div class="appt-card" id="patientAppointments">
+        <div class="appt-card-top">
+          <div class="appt-icon-wrap"><i class="fa-regular fa-calendar"></i></div>
+          <span class="appt-confirmed">Confirmed</span>
+        </div>
+        <p class="appt-label">NEXT APPOINTMENT</p>
+        <h3 class="appt-title">Routine prenatal check-up</h3>
+        <ul class="appt-details">
+          <li><i class="fa-regular fa-calendar"></i> Wednesday, June 18</li>
+          <li><i class="fa-solid fa-location-dot"></i> 10:30 AM · Women's Health Clinic</li>
+          <li><i class="fa-regular fa-user"></i> Dr. Aisha Rahman</li>
+        </ul>
+        <button class="btn-view-appt" onclick="showPatientAppointments()">View appointment</button>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-pill">
+        <div class="stat-pill-icon blue"><i class="fa-regular fa-heart"></i></div>
+        <div><p class="stat-pill-num">6</p><p class="stat-pill-label">Prenatal visits</p><p class="stat-pill-meta">Last visit: June 4</p></div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-pill-icon pink"><i class="fa-regular fa-calendar"></i></div>
+        <div><p class="stat-pill-num">3</p><p class="stat-pill-label">Upcoming appointments</p><p class="stat-pill-meta">Next: Tomorrow at 10:30 AM</p></div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-pill-icon green"><i class="fa-solid fa-wave-square"></i></div>
+        <div><p class="stat-pill-num">12</p><p class="stat-pill-label">Health records</p><p class="stat-pill-meta">Sample records in this prototype</p></div>
+      </div>
+    </div>
+    <section class="risk-review-card">
+      <div class="risk-review-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <div class="risk-review-copy">
+        <strong>Pregnancy risk screening · Example only</strong>
+        <p>Risk flags are limited to programmed criteria and entered information. They are not a diagnosis; ask your healthcare provider to review concerns.</p>
+      </div>
+      <button class="risk-review-action" onclick="showProfileTab('medical-info')">Review health information</button>
+    </section>
+    <div class="dash-bottom-row">
+      <div class="reminders-card">
+        <h3>Important reminders</h3>
+        <p class="card-sub">Small steps that support your care plan</p>
+        <ul class="reminder-list">
+          <li class="reminder-item">
+            <div class="reminder-icon yellow"><i class="fa-solid fa-pills"></i></div>
+            <div class="reminder-body"><p class="reminder-title">Take prenatal vitamins</p><p class="reminder-meta">Today · After breakfast</p></div>
+          </li>
+          <li class="reminder-item">
+            <div class="reminder-icon blue"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="reminder-body"><p class="reminder-title">Complete weekly wellness check</p><p class="reminder-meta">Due Friday</p></div>
+          </li>
+          <li class="reminder-item">
+            <div class="reminder-icon pink"><i class="fa-regular fa-calendar"></i></div>
+            <div class="reminder-body"><p class="reminder-title">Prepare questions for your visit</p><p class="reminder-meta">Tomorrow · 10:30 AM</p></div>
+          </li>
+        </ul>
+      </div>
+      <div class="care-card">
+        <h3>Care for you &amp; baby</h3>
+        <p class="card-sub">Helpful guidance for week 28</p>
+        <ul class="care-list">
+          <li class="care-item"><div class="care-icon"><i class="fa-regular fa-heart"></i></div><div><p class="care-title">Nutrition</p><p class="care-desc">Choose iron-rich foods and pair them with vitamin C.</p></div></li>
+          <li class="care-item"><div class="care-icon"><i class="fa-solid fa-person-walking"></i></div><div><p class="care-title">Gentle movement</p><p class="care-desc">Aim for comfortable activity approved by your care team.</p></div></li>
+          <li class="care-item"><div class="care-icon"><i class="fa-regular fa-sun"></i></div><div><p class="care-title">Daily wellness</p><p class="care-desc">Rest, hydrate, and note any changes to discuss.</p></div></li>
+        </ul>
+        <div class="care-actions">
+          <button class="btn-records" onclick="showProfileTab('prenatal-info')">View Pregnancy Records</button>
+          <button class="btn-book" onclick="showToast('Demo only: appointment requests are not sent or saved.', 'patientToast')">Book Appointment</button>
+        </div>
+        <button class="btn-message" onclick="showToast('Demo only: messages are not sent to your provider.', 'patientToast')"><i class="fa-regular fa-bell"></i> Message Provider</button>
+      </div>
+    </div>
+    <div class="app-toast" id="patientToast" role="status" aria-live="polite"></div>
+  </div>
+
+  <footer class="app-footer">
+    <span>Academic prototype · Sample data · Changes are not saved</span>
+    <span>Not for diagnosis or treatment · Consult a healthcare professional</span>
+  </footer>
+</div><!-- /#page-dashboard -->
+
+
+<div id="page-profile" class="page app-page">
+
+  <div class="page-breadcrumb">My Profile</div>
+
+  <header class="app-bar">
+    <a href="#" class="app-brand" onclick="showPage('login');return false;">
+      <div class="app-brand-icon"><i class="fa-solid fa-heart"></i></div>
+      <div class="app-brand-text">
+        <span class="app-brand-name">MHMS</span>
+        <span class="app-brand-sub">MATERNAL CARE</span>
+      </div>
+    </a>
+    <nav class="app-nav">
+      <a href="#" class="app-nav-item" onclick="showPage('dashboard');return false;"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="#" class="app-nav-item active" onclick="showPage('profile');return false;"><i class="fa-regular fa-user"></i> My Profile</a>
+      <a href="#" class="app-nav-item" onclick="showProfileTab('prenatal-info');return false;"><i class="fa-regular fa-file-lines"></i> Pregnancy Records</a>
+      <a href="#" class="app-nav-item"><i class="fa-regular fa-calendar"></i> Appointments</a>
+      <a href="#" class="app-nav-item"><i class="fa-regular fa-bell"></i> Notifications</a>
+    </nav>
+    <div class="app-bar-right">
+      <button class="notif-btn" aria-label="Notifications">
+        <i class="fa-regular fa-bell"></i><span class="notif-dot">1</span>
+      </button>
+      <div class="user-chip">
+        <div class="user-avatar">MS</div>
+        <div class="user-info">
+          <span class="user-name">Maria Santos</span>
+          <span class="user-meta">28 weeks</span>
+        </div>
+        <button class="logout-btn" onclick="showPage('login')" aria-label="Sign out">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <div class="profile-page-header">
+      <div>
+        <p class="profile-eyebrow">PATIENT PROFILE</p>
+        <h1>My Profile</h1>
+        <p class="profile-sub">Review and manage your personal, pregnancy, and emergency contact information.</p>
+      </div>
+      <button class="btn-edit-profile"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</button>
+    </div>
+    <div class="profile-layout">
+      <aside class="profile-sidebar">
+        <div class="patient-card">
+          <div class="patient-avatar">MS</div>
+          <h3 class="patient-name">Maria Santos</h3>
+          <p class="patient-id">Patient ID: MH-2025-0148</p>
+          <span class="patient-badge">28 weeks pregnant</span>
+          <div class="care-team-section">
+            <p class="care-team-label">CARE TEAM</p>
+            <p class="care-team-doctor">Dr. Aisha Rahman</p>
+            <p class="care-team-role">Primary obstetrician</p>
+          </div>
+        </div>
+      </aside>
+      <div class="profile-main">
+        <div class="profile-tabs">
+          <button class="profile-tab active" onclick="switchTab(this,'profile-info')">Profile</button>
+          <button class="profile-tab" onclick="switchTab(this,'medical-info')">Medical History</button>
+          <button class="profile-tab" onclick="switchTab(this,'prenatal-info')">Prenatal Records</button>
+          <button class="profile-tab" onclick="switchTab(this,'postpartum-info')">Postpartum Checklist</button>
+          <button class="profile-tab" onclick="switchTab(this,'documents-info')">Documents</button>
+        </div>
+        <div class="tab-panel active" id="profile-info">
+          <div class="profile-section-card">
+            <h4 class="profile-section-title">Personal information</h4>
+            <p class="profile-section-sub">Basic identity and contact details</p>
+            <div class="profile-fields-grid two-col">
+              <div class="profile-field"><label>Full name</label><div class="field-value">Maria Santos</div></div>
+              <div class="profile-field"><label>Date of birth</label><div class="field-value">03/12/1997</div></div>
+              <div class="profile-field"><label>Contact number</label><div class="field-value">+63 917 555 0148</div></div>
+              <div class="profile-field"><label>Email address</label><div class="field-value">maria.santos@example.com</div></div>
+              <div class="profile-field full-width"><label>Home address</label><div class="field-value">24 Acacia Street, Quezon City</div></div>
+            </div>
+          </div>
+          <div class="profile-section-card">
+            <h4 class="profile-section-title">Pregnancy information</h4>
+            <div class="profile-fields-grid two-col">
+              <div class="profile-field"><label>Pregnancy status</label><div class="field-value">Active – Third trimester</div></div>
+              <div class="profile-field"><label>Estimated delivery date</label><div class="field-value">09/08/2025</div></div>
+            </div>
+          </div>
+          <div class="profile-two-col-row">
+            <div class="profile-section-card">
+              <h4 class="profile-section-title">Emergency contact</h4>
+              <div class="profile-fields-grid one-col">
+                <div class="profile-field"><label>Contact name</label><div class="field-value">Daniel Santos</div></div>
+                <div class="profile-field"><label>Relationship</label><div class="field-value">Spouse</div></div>
+                <div class="profile-field"><label>Phone number</label><div class="field-value">+63 917 555 0192</div></div>
+              </div>
+            </div>
+            <div class="profile-section-card">
+              <h4 class="profile-section-title">Medical information</h4>
+              <div class="profile-fields-grid one-col">
+                <div class="profile-field"><label>Blood type</label><div class="field-value">O+</div></div>
+                <div class="profile-field"><label>Known allergies</label><div class="field-value">Penicillin</div></div>
+                <div class="profile-field"><label>Medical history</label><div class="field-value">Mild seasonal asthma</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" id="medical-info">
+          <div class="profile-section-card">
+            <h4 class="profile-section-title">Medical history</h4>
+            <p class="profile-section-sub">Example health information entered for care coordination</p>
+            <div class="profile-fields-grid two-col">
+              <div class="profile-field"><label>Blood type</label><div class="field-value">O+</div></div>
+              <div class="profile-field"><label>Known allergies</label><div class="field-value">Penicillin</div></div>
+              <div class="profile-field full-width"><label>Reported medical history</label><div class="field-value">Mild seasonal asthma</div></div>
+            </div>
+          </div>
+          <p class="prototype-inline-note">Information depends on what is entered and has not been clinically verified in this prototype.</p>
+        </div>
+        <div class="tab-panel" id="prenatal-info">
+          <div class="profile-section-card">
+            <h4 class="profile-section-title">Prenatal records</h4>
+            <p class="profile-section-sub">Sample pregnancy timeline and visit records</p>
+            <div class="patient-table-wrap"><table class="patient-table"><thead><tr><th>Date</th><th>Record</th><th>Care team</th><th>Status</th></tr></thead><tbody>
+              <tr><td>June 4</td><td>Routine prenatal check-up</td><td>Dr. Aisha Rahman</td><td><span class="status-badge status-confirmed">Recorded</span></td></tr>
+              <tr><td>May 21</td><td>Pregnancy progress update · Week 26</td><td>Dr. Aisha Rahman</td><td><span class="status-badge status-confirmed">Recorded</span></td></tr>
+              <tr><td>May 7</td><td>Routine prenatal check-up</td><td>Dr. Aisha Rahman</td><td><span class="status-badge status-confirmed">Recorded</span></td></tr>
+            </tbody></table></div>
+          </div>
+          <p class="prototype-inline-note">Sample entries only. Pregnancy tracking and screening do not replace professional assessment.</p>
+        </div>
+        <div class="tab-panel" id="postpartum-info">
+          <div class="profile-section-card">
+            <h4 class="profile-section-title">Postpartum checklist</h4>
+            <p class="profile-section-sub">Example follow-up items to discuss with your care team</p>
+            <ul class="postpartum-list">
+              <li><label><input type="checkbox"> Confirm postpartum follow-up appointment</label></li>
+              <li><label><input type="checkbox"> Review recovery questions with a provider</label></li>
+              <li><label><input type="checkbox"> Update care team with new health information</label></li>
+            </ul>
+          </div>
+          <p class="prototype-inline-note">Checklist selections are temporary and reset when this page reloads.</p>
+        </div>
+        <div class="tab-panel" id="documents-info"><div class="tab-placeholder"><i class="fa-regular fa-file"></i><p>Uploaded documents will appear here.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <span>Academic prototype · Sample data · Changes are not saved</span>
+    <span>Not for diagnosis or treatment · Consult a healthcare professional</span>
+  </footer>
+</div>
+
+
+<div id="page-provider" class="page app-page">
+  <div class="page-breadcrumb">Care Provider Workspace</div>
+  <header class="app-bar">
+    <a href="#" class="app-brand" onclick="showPage('login');return false;">
+      <div class="app-brand-icon"><i class="fa-solid fa-heart"></i></div>
+      <div class="app-brand-text">
+        <span class="app-brand-name">MHMS</span>
+        <span class="app-brand-sub">CARE TEAM</span>
+      </div>
+    </a>
+    <nav class="app-nav" aria-label="Care provider navigation">
+      <button class="app-nav-item active" data-provider-panel="overview" onclick="showProviderPanel('overview', this)"><i class="fa-solid fa-house"></i> Overview</button>
+      <button class="app-nav-item" data-provider-panel="patients" onclick="showProviderPanel('patients', this)"><i class="fa-solid fa-users"></i> Patients</button>
+      <button class="app-nav-item" data-provider-panel="appointments" onclick="showProviderPanel('appointments', this)"><i class="fa-regular fa-calendar"></i> Appointments</button>
+    </nav>
+    <div class="app-bar-right">
+      <button class="notif-btn" aria-label="Notifications" onclick="showToast('You are all caught up on notifications.')"><i class="fa-regular fa-bell"></i></button>
+      <div class="user-chip">
+        <div class="user-avatar">AR</div>
+        <div class="user-info">
+          <span class="user-name">Dr. Aisha Rahman</span>
+          <span class="user-meta">Care provider</span>
+        </div>
+        <button class="logout-btn" onclick="showPage('login')" aria-label="Sign out"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-body provider-body">
+    <section class="provider-panel active" id="provider-overview">
+      <div class="dash-header">
+        <p class="dash-date">CARE TEAM WORKSPACE</p>
+        <h1>Good morning, Dr. Rahman</h1>
+        <p class="dash-sub">Here is your care schedule and the patients who need follow-up.</p>
+      </div>
+      <div class="stats-row provider-stats">
+        <article class="stat-pill"><div class="stat-pill-icon blue"><i class="fa-solid fa-users"></i></div><div><p class="stat-pill-num">24</p><p class="stat-pill-label">Assigned patients</p><p class="stat-pill-meta">Across all care stages</p></div></article>
+        <article class="stat-pill"><div class="stat-pill-icon pink"><i class="fa-regular fa-calendar"></i></div><div><p class="stat-pill-num">5</p><p class="stat-pill-label">Appointments today</p><p class="stat-pill-meta">First visit at 9:00 AM</p></div></article>
+        <article class="stat-pill"><div class="stat-pill-icon green"><i class="fa-solid fa-clipboard-check"></i></div><div><p class="stat-pill-num" id="followupCount">3</p><p class="stat-pill-label">Follow-ups needed</p><p class="stat-pill-meta">Review patient updates</p></div></article>
+      </div>
+      <div class="provider-grid">
+        <section class="provider-card">
+          <div class="provider-card-heading"><div><h2>Today's appointments</h2><p class="card-sub">Your upcoming patient visits</p></div><button class="text-action" onclick="showProviderPanel('appointments')">View schedule</button></div>
+          <div class="provider-appointment">
+            <div class="provider-time">9:00 AM</div><div class="provider-visit"><strong>Maria Santos</strong><span>Routine prenatal check-up · 28 weeks</span></div><span class="status-badge status-confirmed">Confirmed</span>
+          </div>
+          <div class="provider-appointment">
+            <div class="provider-time">10:30 AM</div><div class="provider-visit"><strong>Leah Cruz</strong><span>Blood pressure follow-up · 32 weeks</span></div><span class="status-badge status-confirmed">Confirmed</span>
+          </div>
+          <div class="provider-appointment">
+            <div class="provider-time">1:00 PM</div><div class="provider-visit"><strong>Janelle Reyes</strong><span>Postpartum review · 2 weeks</span></div><span class="status-badge status-pending">Check-in</span>
+          </div>
+        </section>
+        <section class="provider-card">
+          <div class="provider-card-heading"><div><h2>Patients to follow up</h2><p class="card-sub">Recent updates from your care team</p></div><button class="text-action" onclick="showProviderPanel('patients')">View patients</button></div>
+          <div class="followup-item"><span class="followup-dot urgent"></span><div><strong>Leah Cruz</strong><p>Blood pressure reading needs review</p></div><button class="small-action" onclick="reviewPatient(this)">Review</button></div>
+          <div class="followup-item"><span class="followup-dot"></span><div><strong>Maria Santos</strong><p>Weekly wellness check submitted</p></div><button class="small-action" onclick="reviewPatient(this)">Review</button></div>
+          <div class="followup-item"><span class="followup-dot"></span><div><strong>Janelle Reyes</strong><p>Postpartum questionnaire received</p></div><button class="small-action" onclick="reviewPatient(this)">Review</button></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="provider-panel" id="provider-patients">
+      <div class="dash-header">
+        <p class="dash-date">CARE TEAM</p><h1>My patients</h1>
+        <p class="dash-sub">Review assigned patients and their latest care updates.</p>
+      </div>
+      <div id="providerPatientDirectory">
+        <section class="provider-card">
+          <div class="provider-card-heading"><div><h2>Assigned patients</h2><p class="card-sub">Patient information is for care coordination.</p></div><input class="patient-search" id="patientSearch" type="search" placeholder="Search patients" oninput="filterPatients(this.value)" aria-label="Search patients"></div>
+          <div class="patient-table-wrap"><table class="patient-table"><thead><tr><th>Patient</th><th>Care stage</th><th>Next appointment</th><th>Latest update</th><th>Action</th></tr></thead>
+            <tbody id="patientRows">
+              <tr data-patient-id="MH-2025-0148"><td><strong>Maria Santos</strong><span>MH-2025-0148</span></td><td>28 weeks · Third trimester</td><td>Today, 9:00 AM</td><td><span class="status-badge status-confirmed">Wellness check</span></td><td><button class="small-action" onclick="openProviderRecord(this)">View record</button> <button class="small-action" onclick="reviewPatient(this)">Review</button></td></tr>
+              <tr data-patient-id="MH-2025-0162"><td><strong>Leah Cruz</strong><span>MH-2025-0162</span></td><td>32 weeks · Third trimester</td><td>Today, 10:30 AM</td><td><span class="status-badge status-pending">BP follow-up</span></td><td><button class="small-action" onclick="openProviderRecord(this)">View record</button> <button class="small-action" onclick="reviewPatient(this)">Review</button></td></tr>
+              <tr data-patient-id="MH-2025-0109"><td><strong>Janelle Reyes</strong><span>MH-2025-0109</span></td><td>2 weeks postpartum</td><td>Today, 1:00 PM</td><td><span class="status-badge status-confirmed">Questionnaire</span></td><td><button class="small-action" onclick="openProviderRecord(this)">View record</button> <button class="small-action" onclick="reviewPatient(this)">Review</button></td></tr>
+            </tbody>
+          </table></div>
+        </section>
+      </div>
+      <section class="provider-record-detail" id="providerRecordDetail" hidden aria-labelledby="providerRecordName">
+        <div class="provider-record-toolbar">
+          <button class="text-action" type="button" onclick="closeProviderRecord()"><i class="fa-solid fa-arrow-left"></i> Back to patients</button>
+          <span class="status-badge status-pending">Sample record · Not clinically verified</span>
+        </div>
+        <section class="provider-card">
+          <div class="provider-card-heading"><div><p class="dash-date">CARE COORDINATION RECORD</p><h2 id="providerRecordName" tabindex="-1">Patient record</h2><p class="card-sub" id="providerRecordId"></p></div><span class="status-badge status-confirmed" id="providerRecordStage"></span></div>
+          <div class="provider-record-facts">
+            <div><span>Next appointment</span><strong id="providerRecordAppointment"></strong></div>
+            <div><span>Latest patient update</span><strong id="providerRecordUpdate"></strong></div>
+            <div><span>Reported history</span><strong id="providerRecordHistory"></strong></div>
+          </div>
+          <div class="provider-record-note">
+            <label for="providerCareNote">Add a demo follow-up note</label>
+            <textarea id="providerCareNote" rows="3" maxlength="500" placeholder="Enter a sample care-coordination note"></textarea>
+            <p class="prototype-inline-note">Do not enter real patient information. Demo notes are temporary and disappear when this page reloads.</p>
+            <button class="small-action" type="button" onclick="addProviderCareNote()">Add note</button>
+            <ul class="provider-note-list" id="providerCareNotes" aria-live="polite"></ul>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <section class="provider-panel" id="provider-appointments">
+      <div class="dash-header">
+        <p class="dash-date">CARE TEAM</p><h1>Appointment schedule</h1>
+        <p class="dash-sub">Manage today's visits and follow-up status.</p>
+      </div>
+      <section class="provider-card">
+        <div class="provider-card-heading"><div><h2>Wednesday's schedule</h2><p class="card-sub">Appointments assigned to Dr. Aisha Rahman</p></div><span class="status-badge status-confirmed">5 visits</span></div>
+        <div class="provider-appointment"><div class="provider-time">9:00 AM</div><div class="provider-visit"><strong>Maria Santos</strong><span>Routine prenatal check-up · Women's Health Clinic</span></div><button class="small-action" onclick="completeAppointment(this)">Mark complete</button></div>
+        <div class="provider-appointment"><div class="provider-time">10:30 AM</div><div class="provider-visit"><strong>Leah Cruz</strong><span>Blood pressure follow-up · Women's Health Clinic</span></div><button class="small-action" onclick="completeAppointment(this)">Mark complete</button></div>
+        <div class="provider-appointment"><div class="provider-time">1:00 PM</div><div class="provider-visit"><strong>Janelle Reyes</strong><span>Postpartum review · Women's Health Clinic</span></div><button class="small-action" onclick="completeAppointment(this)">Mark complete</button></div>
+      </section>
+    </section>
+    <div class="app-toast" id="appToast" role="status" aria-live="polite"></div>
+  </div>
+  <footer class="app-footer"><span>Academic prototype · Sample data · Changes are not saved</span><span>Not for diagnosis or treatment · Consult a healthcare professional</span></footer>
+</div>
+
+
+<div id="page-admin" class="page app-page">
+  <div class="page-breadcrumb">Administrator Workspace</div>
+  <header class="app-bar">
+    <a href="#" class="app-brand" onclick="showPage('login');return false;">
+      <div class="app-brand-icon"><i class="fa-solid fa-heart"></i></div>
+      <div class="app-brand-text">
+        <span class="app-brand-name">MHMS</span>
+        <span class="app-brand-sub">ADMINISTRATION</span>
+      </div>
+    </a>
+    <nav class="app-nav" aria-label="Administrator navigation">
+      <button class="app-nav-item active" data-admin-panel="overview" onclick="showAdminPanel('overview', this)"><i class="fa-solid fa-house"></i> Overview</button>
+      <button class="app-nav-item" data-admin-panel="accounts" onclick="showAdminPanel('accounts', this)"><i class="fa-solid fa-users-gear"></i> User accounts</button>
+      <button class="app-nav-item" data-admin-panel="appointments" onclick="showAdminPanel('appointments', this)"><i class="fa-regular fa-calendar"></i> Appointments</button>
+      <button class="app-nav-item" data-admin-panel="reports" onclick="showAdminPanel('reports', this)"><i class="fa-regular fa-file-lines"></i> Reports</button>
+    </nav>
+    <div class="app-bar-right">
+      <button class="notif-btn" aria-label="Notifications" onclick="showAdminToast('You are all caught up on notifications.')"><i class="fa-regular fa-bell"></i></button>
+      <div class="user-chip">
+        <div class="user-avatar admin-avatar">AD</div>
+        <div class="user-info"><span class="user-name">Alex Morgan</span><span class="user-meta">Administrator</span></div>
+        <button class="logout-btn" onclick="showPage('login')" aria-label="Sign out"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-body admin-body">
+    <section class="admin-panel active" id="admin-overview">
+      <div class="dash-header">
+        <p class="dash-date">SYSTEM ADMINISTRATION</p>
+        <h1>Administrator dashboard</h1>
+        <p class="dash-sub">Monitor care operations, user access, and appointment activity.</p>
+      </div>
+      <div class="stats-row admin-stats">
+        <article class="stat-pill"><div class="stat-pill-icon blue"><i class="fa-solid fa-users"></i></div><div><p class="stat-pill-num">148</p><p class="stat-pill-label">Registered patients</p><p class="stat-pill-meta">Across active care programs</p></div></article>
+        <article class="stat-pill"><div class="stat-pill-icon pink"><i class="fa-solid fa-user-doctor"></i></div><div><p class="stat-pill-num">12</p><p class="stat-pill-label">Care providers</p><p class="stat-pill-meta">10 active · 2 pending</p></div></article>
+        <article class="stat-pill"><div class="stat-pill-icon green"><i class="fa-regular fa-calendar-check"></i></div><div><p class="stat-pill-num">36</p><p class="stat-pill-label">Appointments today</p><p class="stat-pill-meta" id="adminPendingAppointments">4 need confirmation</p></div></article>
+      </div>
+      <div class="provider-grid">
+        <section class="provider-card">
+          <div class="provider-card-heading"><div><h2>Recent account activity</h2><p class="card-sub">New and updated accounts</p></div><button class="text-action" onclick="showAdminPanel('accounts')">Manage accounts</button></div>
+          <div class="admin-activity"><span class="activity-icon"><i class="fa-solid fa-user-plus"></i></span><div><strong>New provider registration</strong><p>Dr. Elena Reyes · Needs verification</p></div><span class="status-badge status-pending">Pending</span></div>
+          <div class="admin-activity"><span class="activity-icon"><i class="fa-solid fa-user-check"></i></span><div><strong>Patient account updated</strong><p>Maria Santos · Profile information</p></div><span class="status-badge status-confirmed">Complete</span></div>
+          <div class="admin-activity"><span class="activity-icon"><i class="fa-solid fa-user-plus"></i></span><div><strong>New patient registration</strong><p>Nina Flores · Today, 8:42 AM</p></div><span class="status-badge status-confirmed">Active</span></div>
+        </section>
+        <section class="provider-card">
+          <div class="provider-card-heading"><div><h2>Needs attention</h2><p class="card-sub">Administrator actions</p></div></div>
+          <div class="followup-item"><span class="followup-dot urgent"></span><div><strong>2 provider accounts</strong><p>Verify credentials before granting access</p></div><button class="small-action" onclick="showAdminPanel('accounts')">Review</button></div>
+          <div class="followup-item"><span class="followup-dot"></span><div><strong>4 appointments</strong><p>Awaiting confirmation from the care team</p></div><button class="small-action" onclick="showAdminPanel('appointments')">View</button></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="admin-panel" id="admin-accounts">
+      <div class="dash-header"><p class="dash-date">SYSTEM ADMINISTRATION</p><h1>User accounts</h1><p class="dash-sub">Search patient and care-provider accounts and manage their access.</p></div>
+      <section class="provider-card">
+        <div class="provider-card-heading"><div><h2>Account directory</h2><p class="card-sub">Review account type, status, and access.</p></div><input class="patient-search" id="accountSearch" type="search" placeholder="Search accounts" oninput="filterAccounts(this.value)" aria-label="Search accounts"></div>
+        <div class="patient-table-wrap"><table class="patient-table admin-table"><thead><tr><th>Name</th><th>Account type</th><th>Email</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="accountRows">
+            <tr><td><strong>Maria Santos</strong><span>MH-2025-0148</span></td><td>Patient</td><td>maria.santos@example.com</td><td><span class="status-badge status-confirmed">Active</span></td><td><button class="small-action" onclick="toggleAccount(this)">Deactivate</button></td></tr>
+            <tr><td><strong>Dr. Aisha Rahman</strong><span>STAFF-0012</span></td><td>Care provider</td><td>a.rahman@mhms.example</td><td><span class="status-badge status-confirmed">Active</span></td><td><button class="small-action" onclick="toggleAccount(this)">Deactivate</button></td></tr>
+            <tr><td><strong>Dr. Elena Reyes</strong><span>STAFF-0018</span></td><td>Care provider</td><td>e.reyes@mhms.example</td><td><span class="status-badge status-pending">Pending</span></td><td><button class="small-action" onclick="approveAccount(this)">Approve</button></td></tr>
+            <tr><td><strong>Nina Flores</strong><span>MH-2025-0191</span></td><td>Patient</td><td>nina.flores@example.com</td><td><span class="status-badge status-confirmed">Active</span></td><td><button class="small-action" onclick="toggleAccount(this)">Deactivate</button></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+    </section>
+
+    <section class="admin-panel" id="admin-appointments">
+      <div class="dash-header"><p class="dash-date">SYSTEM ADMINISTRATION</p><h1>Appointment oversight</h1><p class="dash-sub">Monitor scheduled visits and their confirmation status.</p></div>
+      <section class="provider-card">
+        <div class="provider-card-heading"><div><h2>Today's appointments</h2><p class="card-sub">Wednesday · Women's Health Clinic</p></div><span class="status-badge status-confirmed">36 scheduled</span></div>
+        <div class="provider-appointment"><div class="provider-time">9:00 AM</div><div class="provider-visit"><strong>Maria Santos</strong><span>Dr. Aisha Rahman · Prenatal check-up</span></div><span class="status-badge status-confirmed">Confirmed</span></div>
+        <div class="provider-appointment"><div class="provider-time">10:30 AM</div><div class="provider-visit"><strong>Leah Cruz</strong><span>Dr. Aisha Rahman · Blood pressure follow-up</span></div><button class="small-action" onclick="confirmAdminAppointment(this)">Confirm appointment</button></div>
+        <div class="provider-appointment"><div class="provider-time">1:00 PM</div><div class="provider-visit"><strong>Janelle Reyes</strong><span>Dr. Aisha Rahman · Postpartum review</span></div><span class="status-badge status-confirmed">Confirmed</span></div>
+      </section>
+    </section>
+    <section class="admin-panel" id="admin-reports">
+      <div class="dash-header"><p class="dash-date">SYSTEM ADMINISTRATION</p><h1>Care coordination reports</h1><p class="dash-sub">Organized sample records for service and appointment review.</p></div>
+      <section class="provider-card">
+        <div class="provider-card-heading"><div><h2>Maternal care summary</h2><p class="card-sub">Example report built from the records shown in this prototype</p></div><button class="small-action" onclick="downloadDemoReport()">Download CSV</button></div>
+        <div class="stats-row report-stats">
+          <article class="stat-pill"><div class="stat-pill-icon blue"><i class="fa-solid fa-users"></i></div><div><p class="stat-pill-num">4</p><p class="stat-pill-label">Example accounts</p><p class="stat-pill-meta">Patients and providers</p></div></article>
+          <article class="stat-pill"><div class="stat-pill-icon pink"><i class="fa-regular fa-calendar"></i></div><div><p class="stat-pill-num">3</p><p class="stat-pill-label">Example appointments</p><p class="stat-pill-meta">Today's displayed schedule</p></div></article>
+          <article class="stat-pill"><div class="stat-pill-icon green"><i class="fa-solid fa-baby"></i></div><div><p class="stat-pill-num">1</p><p class="stat-pill-label">Postpartum follow-up</p><p class="stat-pill-meta">Example patient record</p></div></article>
+        </div>
+        <p class="prototype-inline-note">This downloadable report contains only the hard-coded demonstration rows on this page. It is not connected to a patient database.</p>
+      </section>
+    </section>
+    <div class="app-toast" id="adminToast" role="status" aria-live="polite"></div>
+  </div>
+  <footer class="app-footer"><span>Academic prototype · Sample data · Changes are not saved</span><span>Not for diagnosis or treatment · Consult a healthcare professional</span></footer>
+</div>
+
+
+
+<script>
+  function showLandingPage(name) {
+    const selected = document.getElementById(name);
+    if (!selected || !selected.classList.contains('landing-view')) {
+      throw new Error('Landing page not found: ' + name);
+    }
+    document.querySelectorAll('.landing-view').forEach(view => {
+      view.classList.toggle('active', view === selected);
+    });
+    document.querySelectorAll('.ln-nav-links a').forEach(link => {
+      if (link.getAttribute('href') === '#' + name) {
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+    document.getElementById('page-login').classList.toggle('landing-subpage-active', name !== 'home');
+    history.replaceState(null, '', '#' + name);
+    window.scrollTo(0, 0);
+  }
+
+  function selectLandingRole(role) {
+    setLoginRole(role);
+    showLandingPage('home');
+  }
+
+  function handleContactMessage(event) {
+    event.preventDefault();
+    document.getElementById('contactFormStatus').textContent =
+      'Thank you. This demo form does not send or save messages. Please contact your clinic directly for care-related questions.';
+  }
+
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function setLoginRole(role) {
+    document.getElementById('loginRole').value = role;
+    const badge = document.getElementById('loginRoleBadge');
+    const roleDetails = {
+      patient: { icon: 'fa-regular fa-heart', label: 'PATIENT SPACE' },
+      provider: { icon: 'fa-solid fa-user-doctor', label: 'CARE TEAM SPACE' },
+      admin: { icon: 'fa-solid fa-user-shield', label: 'ADMINISTRATOR SPACE' }
+    };
+    const selected = roleDetails[role];
+    badge.innerHTML = '<i class="' + selected.icon + '"></i> ' + selected.label;
+    document.querySelectorAll('[data-login-role]').forEach(link => link.classList.remove('selected'));
+    const selectedLink = document.querySelector('[data-login-role="' + role + '"]');
+    if (selectedLink) selectedLink.classList.add('selected');
+    const patientLoginLink = document.querySelector('.patient-login-link');
+    if (patientLoginLink) patientLoginLink.hidden = role === 'patient';
+  }
+
+  function useDemoAccount(role) {
+    const accounts = {
+      patient: { email: 'maria.santos@example.com', password: 'Demo123' },
+      provider: { email: 'a.rahman@mhms.example', password: 'Demo123' },
+      admin: { email: 'admin@example.com', password: 'Demo123' }
+    };
+    const account = accounts[role];
+    if (!account) {
+      throw new Error('Demo account not found for role: ' + role);
+    }
+
+    setLoginRole(role);
+    document.getElementById('email').value = account.email;
+    document.getElementById('password').value = account.password;
+    document.getElementById('emailError').textContent = '';
+    document.getElementById('pwError').textContent = '';
+    document.getElementById('email').classList.remove('error');
+    document.getElementById('password').classList.remove('error');
+  }
+
+  
+  function handleLogin(e) {
+    e.preventDefault();
+    const email  = document.getElementById('email');
+    const pw     = document.getElementById('password');
+    const eErr   = document.getElementById('emailError');
+    const pErr   = document.getElementById('pwError');
+    let ok = true;
+
+    eErr.textContent = ''; pw && (pErr.textContent = '');
+    email.classList.remove('error'); pw.classList.remove('error');
+
+    if (!email.value.trim()) {
+      eErr.textContent = 'Please enter your email address.';
+      email.classList.add('error'); ok = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+      eErr.textContent = 'Please enter a valid email address.';
+      email.classList.add('error'); ok = false;
+    }
+    if (!pw.value) {
+      pErr.textContent = 'Please enter your password.';
+      pw.classList.add('error'); ok = false;
+    } else if (pw.value.length < 6) {
+      pErr.textContent = 'Password must be at least 6 characters.';
+      pw.classList.add('error'); ok = false;
+    }
+    if (!ok) return;
+
+    const demoEmailRoles = {
+      'maria.santos@example.com': 'patient',
+      'nina.flores@example.com': 'patient',
+      'a.rahman@mhms.example': 'provider',
+      'e.reyes@mhms.example': 'provider',
+      'admin@example.com': 'admin'
+    };
+    const loginRole = demoEmailRoles[email.value.trim().toLowerCase()] ||
+      document.getElementById('loginRole').value;
+    setLoginRole(loginRole);
+
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = 'Signing you in… <i class="fa-solid fa-spinner fa-spin"></i>';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = "Let's get you signed in <i class='fa-solid fa-arrow-right'></i>";
+      btn.disabled = false;
+      const destination = { patient: 'dashboard', provider: 'provider', admin: 'admin' };
+      const page = destination[loginRole];
+      if (!page) {
+        throw new Error('No workspace is configured for role: ' + loginRole);
+      }
+      showPage(page);
+    }, 900);
+  }
+
+  function showAdminPanel(name, btn) {
+    document.querySelectorAll('.admin-panel').forEach(panel => panel.classList.remove('active'));
+    document.getElementById('admin-' + name).classList.add('active');
+    document.querySelectorAll('[data-admin-panel]').forEach(item => item.classList.remove('active'));
+    const activeButton = btn || document.querySelector('[data-admin-panel="' + name + '"]');
+    if (activeButton) activeButton.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function showProfileTab(panelId) {
+    showPage('profile');
+    const tab = document.querySelector('.profile-tab[onclick*="' + panelId + '"]');
+    if (!tab) {
+      throw new Error('Profile tab not found: ' + panelId);
+    }
+    switchTab(tab, panelId);
+  }
+
+  function showPatientAppointments() {
+    showPage('dashboard');
+    document.getElementById('patientAppointments').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function showAdminToast(message) {
+    const toast = document.getElementById('adminToast');
+    toast.textContent = message;
+    toast.classList.add('visible');
+    window.clearTimeout(showAdminToast.timeout);
+    showAdminToast.timeout = window.setTimeout(() => toast.classList.remove('visible'), 2600);
+  }
+
+  function confirmAdminAppointment(button) {
+    const row = button.closest('.provider-appointment');
+    const badge = document.createElement('span');
+    badge.className = 'status-badge status-confirmed';
+    badge.textContent = 'Confirmed';
+    button.replaceWith(badge);
+
+    const pending = document.getElementById('adminPendingAppointments');
+    const count = Number((pending.textContent.match(/\d+/) || ['0'])[0]);
+    pending.textContent = Math.max(0, count - 1) + ' need confirmation';
+    showAdminToast('Appointment for ' + row.querySelector('.provider-visit strong').textContent + ' marked confirmed in this demo.');
+  }
+
+  function filterAccounts(query) {
+    const term = query.trim().toLowerCase();
+    document.querySelectorAll('#accountRows tr').forEach(row => {
+      row.hidden = !row.textContent.toLowerCase().includes(term);
+    });
+  }
+
+  function toggleAccount(button) {
+    const row = button.closest('tr');
+    const status = row.querySelector('.status-badge');
+    const active = status.textContent.trim() === 'Active';
+    status.textContent = active ? 'Inactive' : 'Active';
+    status.className = 'status-badge ' + (active ? 'status-pending' : 'status-confirmed');
+    button.textContent = active ? 'Activate' : 'Deactivate';
+    showAdminToast(row.querySelector('strong').textContent + ' account ' + (active ? 'deactivated.' : 'activated.'));
+  }
+
+  function approveAccount(button) {
+    const row = button.closest('tr');
+    row.querySelector('.status-badge').textContent = 'Active';
+    row.querySelector('.status-badge').className = 'status-badge status-confirmed';
+    button.textContent = 'Deactivate';
+    button.onclick = function() { toggleAccount(this); };
+    showAdminToast(row.querySelector('strong').textContent + ' account approved.');
+  }
+
+  function downloadDemoReport() {
+    const rows = [
+      ['Report', 'Example count', 'Data source'],
+      ['Patient accounts', '2', 'Hard-coded prototype sample'],
+      ['Care provider accounts', '2', 'Hard-coded prototype sample'],
+      ['Appointments displayed', '3', 'Hard-coded prototype sample'],
+      ['Postpartum follow-ups', '1', 'Hard-coded prototype sample']
+    ];
+    const csv = rows.map(row => row.map(value => '"' + value.replace(/"/g, '""') + '"').join(',')).join('\r\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'mhms-demo-care-summary.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+    showAdminToast('Demo report downloaded. It contains sample data only.');
+  }
+
+  function showProviderPanel(name, btn) {
+    document.querySelectorAll('.provider-panel').forEach(panel => panel.classList.remove('active'));
+    document.getElementById('provider-' + name).classList.add('active');
+    document.querySelectorAll('[data-provider-panel]').forEach(item => item.classList.remove('active'));
+    const activeButton = btn || document.querySelector('[data-provider-panel="' + name + '"]');
+    if (activeButton) activeButton.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function openProviderRecord(button) {
+    const row = button.closest('tr');
+    const records = {
+      'MH-2025-0148': {
+        name: 'Maria Santos',
+        stage: '28 weeks · Third trimester',
+        appointment: 'Today, 9:00 AM · Routine prenatal check-up',
+        update: 'Weekly wellness check',
+        history: 'O+ · Penicillin allergy · Mild seasonal asthma'
+      },
+      'MH-2025-0162': {
+        name: 'Leah Cruz',
+        stage: '32 weeks · Third trimester',
+        appointment: 'Today, 10:30 AM · Blood pressure follow-up',
+        update: 'Blood pressure follow-up',
+        history: 'No additional history shown in this sample'
+      },
+      'MH-2025-0109': {
+        name: 'Janelle Reyes',
+        stage: '2 weeks postpartum',
+        appointment: 'Today, 1:00 PM · Postpartum review',
+        update: 'Postpartum questionnaire',
+        history: 'No additional history shown in this sample'
+      }
+    };
+    const record = records[row.dataset.patientId];
+    if (!record) {
+      throw new Error('Sample patient record not found: ' + row.dataset.patientId);
+    }
+
+    document.getElementById('providerRecordName').textContent = record.name;
+    document.getElementById('providerRecordId').textContent = row.dataset.patientId;
+    document.getElementById('providerRecordStage').textContent = record.stage;
+    document.getElementById('providerRecordAppointment').textContent = record.appointment;
+    document.getElementById('providerRecordUpdate').textContent = record.update;
+    document.getElementById('providerRecordHistory').textContent = record.history;
+    document.getElementById('providerCareNote').value = '';
+    document.getElementById('providerCareNotes').replaceChildren();
+    document.getElementById('providerPatientDirectory').hidden = true;
+    document.getElementById('providerRecordDetail').hidden = false;
+    document.getElementById('providerRecordName').focus();
+  }
+
+  function closeProviderRecord() {
+    document.getElementById('providerRecordDetail').hidden = true;
+    document.getElementById('providerPatientDirectory').hidden = false;
+    document.getElementById('patientSearch').focus();
+  }
+
+  function addProviderCareNote() {
+    const input = document.getElementById('providerCareNote');
+    const note = input.value.trim();
+    if (!note) {
+      showToast('Enter a demo follow-up note first.');
+      input.focus();
+      return;
+    }
+
+    const item = document.createElement('li');
+    item.textContent = note;
+    document.getElementById('providerCareNotes').append(item);
+    input.value = '';
+    showToast('Demo note added temporarily. It will not be saved.');
+  }
+
+  function showToast(message, toastId = 'appToast') {
+    const toast = document.getElementById(toastId);
+    if (!toast) {
+      throw new Error('Notification area not found: ' + toastId);
+    }
+    toast.textContent = message;
+    toast.classList.add('visible');
+    window.clearTimeout(showToast.timeout);
+    showToast.timeout = window.setTimeout(() => toast.classList.remove('visible'), 2600);
+  }
+
+  function reviewPatient(button) {
+    const row = button.closest('tr') || button.closest('.followup-item');
+    const name = row.querySelector('strong').textContent;
+    button.textContent = 'Reviewed';
+    button.disabled = true;
+    button.classList.add('is-complete');
+    const count = document.getElementById('followupCount');
+    if (count && Number(count.textContent) > 0) count.textContent = Number(count.textContent) - 1;
+    showToast(name + "'s update marked as reviewed.");
+  }
+
+  function filterPatients(query) {
+    const term = query.trim().toLowerCase();
+    document.querySelectorAll('#patientRows tr').forEach(row => {
+      row.hidden = !row.textContent.toLowerCase().includes(term);
+    });
+  }
+
+  function completeAppointment(button) {
+    button.textContent = 'Completed';
+    button.disabled = true;
+    button.classList.add('is-complete');
+    button.closest('.provider-appointment').querySelector('.provider-time').textContent += ' · Done';
+    showToast('Appointment marked complete.');
+  }
+
+  function togglePw() {
+    const pw   = document.getElementById('password');
+    const icon = document.getElementById('pwIcon');
+    const show = pw.type === 'password';
+    pw.type        = show ? 'text' : 'password';
+    icon.className = show ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+  }
+
+  function switchTab(btn, panelId) {
+    const root = btn.closest('.profile-main');
+    root.querySelectorAll('.profile-tab').forEach(t  => t.classList.remove('active'));
+    root.querySelectorAll('.tab-panel').forEach(p   => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  }
+
+  setLoginRole('patient');
+  const landingSection = location.hash.slice(1);
+  if (['home', 'about', 'features', 'community', 'contact', 'help'].includes(landingSection)) {
+    showLandingPage(landingSection);
+  }
+</script>
+
+</body>
+</html>
